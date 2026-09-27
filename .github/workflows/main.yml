@@ -1,0 +1,24 @@
+name: Connect to Private Windows Machine
+
+on: [push]
+
+jobs:
+  connect-and-run:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      # Connects the GitHub runner securely to your Tailscale network
+      - name: Tailscale Connection
+        uses: tailscale/github-action@v2
+        with:
+          oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
+          oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
+          tags: tag:ci
+
+      # The runner can now securely access your private Windows machine
+      - name: Run Task on Remote Machine
+        run: |
+          echo "Connecting to Windows host..."
+          # Insert your command, deployment step, or communication script here
